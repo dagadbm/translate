@@ -22,7 +22,7 @@ angular.module('trick', [
   .config([
     '$locationProvider', '$routeProvider',
   function($locationProvider, $routeProvider) {
-      $locationProvider.html5Mode(true)
+      $locationProvider.html5Mode(false)
         .hashPrefix('!');
 
       $routeProvider.otherwise({
