@@ -1,0 +1,90 @@
+<a ng-href="/" class="back"><i class="fa fa-chevron-circle-left fa-2x"></i></a>
+
+<h2>Enabled Languages</h2>
+<div class="center">
+  <table>
+    <tr ng-repeat="(id, lang) in enabledLangs">
+      <td>{{ id }}</td>
+      <td>{{ lang }}</td>
+      <td><button class="inline red" ng-click="disableLang(id)">Remove / Disable</button></td>
+    </tr>
+    <tr>
+      <td><input type="text" ng-model="newEnabledLang.id" placeholder="ISO 639-1 langcode"/></td>
+      <td><input type="text" ng-model="newEnabledLang.name" placeholder="Language Name in native lang"/></td>
+      <td><button class="inline green" ng-click="enableLang()">Add / Enable</button></td>
+    </tr>
+  </table>
+  <span>{{ statusLang }}</span>
+</div>
+
+<h2>Add string</h2>
+<div class="center">
+  <div>
+    <label>
+      String id: <input type="text" ng-model="new.id" placeholder="id"/>
+    </label>
+  </div>
+  <div>
+    <label>
+      <input type="checkbox" ng-model="new.isArray" /> Is an Array of strings
+    </label>
+  </div>
+
+  <div ng-if="!new.isArray">
+    <label>
+      Value: <input type="text" ng-model="new.value" placeholder="value"/>
+    </label>
+  </div>
+  <div ng-if="new.isArray">
+    <button class="inline" ng-click="new.values[new.values.length] = ''">Append to list</button>
+    <div ng-repeat="value in new.values track by $index">
+      <label>{{ $index }} <input type="text" ng-model="new.values[$index]" placeholder="value"/></label>
+      <button class="inline red" ng-click="new.values.splice($index, 1)">Remove</button>
+    </div>
+  </div>
+
+  <label for="context">Context (markdown supported)</label>
+  <textarea id="context" ng-model="new.context" placeholder="Optional context"></textarea>
+  <br/>
+  <div class="center">
+    <button class="inline green" ng-click="addTranslatable()">Add Translatable</button>
+    <button class="inline green" ng-click="addUntranslatable()">Add Untranslatable</button>
+  </div>
+  <span>{{ status }}</span>
+</div>
+
+<h2>Translatable</h2>
+<table>
+  <tr>
+    <th>id</th>
+    <th>String(s)</th>
+  </tr>
+  <tr ng-repeat="string in trStrings">
+    <td>{{ string.id }}</td>
+    <td ng-if="string.value !== undefined">{{ string.value }}</td>
+    <td ng-if="string.values !== undefined">
+      <!-- it's an array! -->
+      <ul>
+        <li ng-repeat="value in string.values track by $index" class="inl-blck half">{{ value }}</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+<h2>Unranslatable</h2>
+<table>
+  <tr>
+    <th>id</th>
+    <th>String(s)</th>
+  </tr>
+  <tr ng-repeat="string in unTrStrings">
+    <td>{{ string.id }}</td>
+    <td ng-if="string.value !== undefined">{{ string.value }}</td>
+    <td ng-if="string.values !== undefined">
+      <!-- it's an array! -->
+      <ul>
+        <li ng-repeat="value in string.values track by $index" class="inl-blck half">{{ value }}</li>
+      </ul>
+    </td>
+  </tr>
+</table>

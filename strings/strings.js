@@ -27,6 +27,8 @@ angular.module('trick.strings', ['ngRoute'])
           var i18nRef = ref.child('translated').child($scope.lang.$value)
           $scope.i18n = $firebaseObject(i18nRef)
         })
+      } else {
+        $location.path('/')
       }
     })
 
