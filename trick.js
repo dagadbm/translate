@@ -1,107 +1,110 @@
-'use strict';
+/* global firebase, angular */
+'use strict'
 var config = {
-  apiKey: "AIzaSyD07mROu__kGOuJ-0MyjtjS6R5-DiTfUpM",
-  authDomain: "project-5641153190345267944.firebaseapp.com",
-  databaseURL: "https://project-5641153190345267944.firebaseio.com",
-  storageBucket: "project-5641153190345267944.appspot.com"
-};
-firebase.initializeApp(config);
+  apiKey: 'AIzaSyD07mROu__kGOuJ-0MyjtjS6R5-DiTfUpM',
+  authDomain: 'project-5641153190345267944.firebaseapp.com',
+  databaseURL: 'https://project-5641153190345267944.firebaseio.com',
+  storageBucket: 'project-5641153190345267944.appspot.com'
+}
+firebase.initializeApp(config)
 
-function toggleNav() {
-  document.getElementsByClassName("topnav")[0].classList.toggle("responsive");
-  document.getElementsByTagName("nav")[0].classList.toggle("responsive");
+function toggleNav () { // eslint-disable-line
+  document.getElementsByClassName('topnav')[0].classList.toggle('responsive')
+  document.getElementsByTagName('nav')[0].classList.toggle('responsive')
 }
 
 angular.module('trick', [
   'ngRoute',
   'trick.dash',
   'trick.details',
-  'firebase'
+  'trick.strings',
+  'firebase',
+  'hc.marked'
 ])
 
   .config([
     '$locationProvider', '$routeProvider',
-  function($locationProvider, $routeProvider) {
+    function ($locationProvider, $routeProvider) {
       $locationProvider.html5Mode(true)
-        .hashPrefix('!');
+        .hashPrefix('!')
 
       $routeProvider.otherwise({
         redirectTo: '/'
-      });
+      })
     }
   ])
 
-  .factory("Auth", [
-    "$firebaseAuth",
-      function($firebaseAuth) {
-      return $firebaseAuth();
+  .factory('Auth', [
+    '$firebaseAuth',
+    function ($firebaseAuth) {
+      return $firebaseAuth()
     }
   ])
 
-  .factory("Db",
-    function() {
+  .factory('Db',
+    function () {
       return firebase.database()
-        .ref();
+        .ref()
     })
 
-  .run(function($location, $rootScope, Auth, Db) {
-    $rootScope.$on("$routeChangeError", function(event, next, previous, error) {
-      if (error === "AUTH_REQUIRED") {
-        $location.path('/');
+  .run(function ($location, $rootScope, Auth, Db) {
+    $rootScope.$on('$routeChangeError', function (event, next, previous, error) {
+      if (error === 'AUTH_REQUIRED') {
+        $location.path('/')
         $rootScope.Error(
           'You need to be signed in to access this page, please Sign In and try again.'
-        );
+        )
       }
-    });
+    })
 
-    $rootScope.signIn = function() {
-      $rootScope.user = null;
-      $rootScope.Error("", false);
-      Auth.$signInWithPopup("google")
-        .then(function(firebaseUser) {
-          $rootScope.user = firebaseUser;
+    $rootScope.signIn = function () {
+      $rootScope.user = null
+      $rootScope.Error('', false)
+      Auth.$signInWithPopup('google')
+        .then(function (firebaseUser) {
+          $rootScope.user = firebaseUser
         })
-        .catch(function(error) {
-          $rootScope.Error(error);
-        });
-    };
+        .catch(function (error) {
+          $rootScope.Error(error)
+        })
+    }
 
-    $rootScope.signOut = function() {
-      Auth.$signOut();
-    };
+    $rootScope.signOut = function () {
+      Auth.$signOut()
+    }
 
-    $rootScope.goHome = function() {
-      $location.path('/');
-    };
+    $rootScope.goHome = function () {
+      $location.path('/')
+    }
 
-    $rootScope.Error = function(e, bool) {
+    $rootScope.Error = function (e, bool) {
       $rootScope.error = {
         text: e,
-        show: (bool == undefined ? true : bool)
+        show: (bool === undefined ? true : bool)
       }
     }
 
-    $rootScope.Subpage = function(name) {
+    $rootScope.Subpage = function (name) {
       $rootScope.subpage = name
     }
 
-    Auth.$onAuthStateChanged(function(firebaseUser) {
-      $rootScope.user = firebaseUser;
+    Auth.$onAuthStateChanged(function (firebaseUser) {
+      $rootScope.user = firebaseUser
     })
   })
 
   .directive('ngConfirmClick', [
-        function() {
+    function () {
       return {
-        link: function(scope, element, attr) {
-          var msg = attr.ngConfirmClick || "Are you sure?";
-          var clickAction = attr.confirmedClick;
-          element.bind('click', function(event) {
+        link: function (scope, element, attr) {
+          var msg = attr.ngConfirmClick || 'Are you sure?'
+          var clickAction = attr.confirmedClick
+          element.bind('click', function (event) {
             if (window.confirm(msg)) {
               scope.$eval(clickAction)
             }
-          });
+          })
         }
       }
-      }
-    ])
+    }
+  ])

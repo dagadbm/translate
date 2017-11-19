@@ -1,0 +1,19 @@
+<a ng-href="/" class="back"><i class="fa fa-chevron-circle-left fa-2x"></i></a>
+<div ng-repeat="string in strings" class="center article">
+  <div ng-if="string.value !== undefined">
+    <p>{{ string.value }}</p>
+    <textarea placeholder="translation ({{ lang.$value }})" ng-model="i18n[string.id]" ng-disabled="!lang.$value"></textarea><br/>
+    <button ng-click="save()" class="green inline" ng-disabed="!lang.$value"><i class="fa fa-save"></i> Save</button>
+  </div>
+  <div ng-if="string.values !== undefined">
+    <!-- it's an array! -->
+    <div ng-repeat="value in string.values track by $index">
+      <span class="inl-blck half">{{ value }}</span>
+      <input type="text" class="half" placeholder="translation ({{ lang.$value }})" ng-model="i18n[string.id][$index]" ng-disabled="!lang.$value" />
+    </div>
+    <button ng-click="save(string.id)" class="green inline" ng-disabed="!lang.$value"><i class="fa fa-save"></i> Save</button>
+  </div>
+  <span>{{ statuses[string.id] }}</span>
+  <h3 ng-if="string.context">Context</h3>
+  <p marked="string.context"></p>
+</div

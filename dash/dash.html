@@ -25,6 +25,11 @@
         Loading data, if this message persists you may not be authorized to use this page, if so go to <a href="https://the-tricktionary.com">the Tricktionary</a><br/>signed in as {{ user.uid }}
     </span>
 </div>
+<div class="box emt" ng-if="user && lang.$value">
+  <span>
+        Please also click "Strings" in the menu above to be able to add translations for everything that isn't trick data.
+  </span>
+</div>
 <div class="box" ng-repeat="level in data" ng-if="user && lang.$value">
   <h2 class="searchheader">Level {{ level.level }}</h2>
   <!--<div ng-repeat="type in types" class="box">
@@ -36,13 +41,4 @@
     {{ trick.name }}
   </a>
   <!--</div>-->
-</div>
-<div class="center" ng-if="user && lang.$value">
-  <div ng-repeat="type in types.en track by $index">{{ type }}:
-    <input type="text" ng-model="typeslang[$index]" placeholder="{{ type + ' (' + lang.$value + ')'}}"
-    />
-  </div>
-  <button ng-click="save()" class="green inline" ng-disabed="!lang.$value"><i class="fa fa-save"></i> Save</button>
-  <span
-    class="gray">{{ status }}</span>
 </div>
