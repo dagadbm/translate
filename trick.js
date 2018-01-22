@@ -18,7 +18,6 @@ angular.module('trick', [
   'trick.dash',
   'trick.details',
   'trick.strings',
-  'trick.admin',
   'firebase',
   'hc.marked'
 ])
